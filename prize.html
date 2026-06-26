@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة كاملة الشاشة</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* يمنع التمرير وتظل الصورة ثابتة تماماً */
+            background-color: #000;
+        }
+
+        /* الصورة تأخذ الشاشة بالكامل وتتغير تلقائياً لتناسب أبعاد الهاتف */
+        .full-screen-bg {
+            /* استبدلي "my-image.jpg" باسم ملف الصورة الخاص بكِ */
+            background-image: url('pi.jpeg'); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover; 
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; /* يجعل الشاشة بأكملها قابلة للضغط لتفعيل الصوت */
+        }
+
+        /* إخفاء مشغل الصوت التقليدي لتبقى الصفحة نظيفة وصورة فقط */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشاشة بالكامل عبارة عن الصورة -->
+    <div class="full-screen-bg" id="bgContainer">
+        
+        <!-- ملف الصوت مضاف إليه خاصية التشغيل التلقائي والتكرار إذا رغبتِ -->
+        <!-- استبدلي "my-audio.mp3" باسم ملف الصوت الخاص بكِ -->
+        <audio id="bl" autoplay loop>
+            <source src="bl.mp3" type="audio/mpeg">
+        </audio>
+
+    </div>
+
+    <!-- كود برمي ذكي لتخطي قيود المتصفح وتشغيل الصوت تلقائياً عند أول تفاعل أو لمس للشاشة -->
+    <script>
+        const audio = document.getElementById('bl');
+        const bgContainer = document.getElementById('bgContainer');
+
+        // محاولة تشغيل الصوت فوراً عند التحميل (قد تنجح في بعض المتصفحات)
+        window.addEventListener('DOMContentLoaded', () => {
+            audio.play().catch(error => {
+                console.log("المتصفح يمنع التشغيل التلقائي حتى يتفاعل المستخدم مع الصفحة.");
+            });
+        });
+
+        // تشغيل الصوت فوراً عند أول لمسة أو ضغطة في أي مكان على الشاشة
+        bgContainer.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+        
+        bgContainer.addEventListener('touchstart', () => {
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+    </script>
+
+</body>
+</html>
